@@ -2,10 +2,9 @@ package be.skydragonsz.discord;
 
 import be.skydragonsz.discord.command.Register;
 import be.skydragonsz.discord.exeptions.APIExeption;
-import be.skydragonsz.discord.reddit.AwwAnime;
+import be.skydragonsz.discord.reddit.RedditFetcher;
 import be.skydragonsz.discord.system.Settings;
 import be.skydragonsz.discord.system.SettingsManager;
-import com.sun.org.apache.regexp.internal.RE;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -38,12 +37,15 @@ public class Sadboys {
 
 
             Register.api = api;
+            Register.resiterBasicCommands();
+            Register.setupMusic();
+            Register.funCommands();
             if(settings.getGoogleApiKey() != null){
                 Register.googleAPI();
             }
 
-            Thread awwAnime = new Thread(new AwwAnime());
-            awwAnime.start();
+            Thread reddit = new Thread(new RedditFetcher());
+            reddit.start();
 
         }
         catch (APIExeption e){

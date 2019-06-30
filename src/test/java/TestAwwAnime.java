@@ -1,8 +1,7 @@
-import be.skydragonsz.discord.reddit.AwwAnime;
+import be.skydragonsz.discord.util.JSONService;
 
 public class TestAwwAnime {
     public static void main(String[] args){
-        Thread awwAnimeThread = new Thread(new AwwAnime());
-        awwAnimeThread.start();
+        System.out.println(JSONService.getResponseCode("https://i.redd.it/mjf2enilue731.jpg"));
     }
 }

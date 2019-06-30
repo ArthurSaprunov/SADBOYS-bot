@@ -5,10 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.ConnectException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.nio.charset.Charset;
 
 public class JSONService {
@@ -26,6 +23,27 @@ public class JSONService {
         } catch (IOException e) {
             logger.error("Failed to get apicalls!",e);
             return null;
+        }
+
+    }
+
+    public static int getResponseCode(String urlString){
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            return connection.getResponseCode();
+        } catch (ProtocolException e) {
+            logger.warn("ProtocolExeption",e);
+            return 0;
+        } catch (MalformedURLException e) {
+            logger.warn("MalformedURLException",e);
+            return 0;
+        } catch (IOException e) {
+            logger.warn("IOException",e);
+            return 0;
         }
 
     }
