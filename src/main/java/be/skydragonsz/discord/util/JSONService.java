@@ -104,7 +104,7 @@ public class JSONService {
 
     }
 
-
+    //TODO Rewrite this
     public static void POSTRequest(JSONObject jsonObj, String urlString) {
         try{
             URL obj = new URL(urlString);

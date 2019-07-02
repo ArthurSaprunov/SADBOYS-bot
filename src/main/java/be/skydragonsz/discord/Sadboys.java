@@ -32,13 +32,16 @@ public class Sadboys {
         try {
             settings = SettingsManager.getInstance().getSettings();
 
-            JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT).setToken(settings.getBotToken());
+            JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT)
+                                        .setToken(settings.getBotToken())
+                                        .setAudioEnabled(false)
+                                        .setAutoReconnect(true);
+
             api = jdaBuilder.build();
 
 
             Register.api = api;
             Register.resiterBasicCommands();
-            Register.setupMusic();
             Register.funCommands();
             if(settings.getGoogleApiKey() != null){
                 Register.googleAPI();

@@ -38,7 +38,7 @@ public class RedditFetcher extends Thread{
 
     @Override
     public void run(){
-        timeKeeper = System.currentTimeMillis()-timer;
+        timeKeeper = System.currentTimeMillis();
         Thread.currentThread().setName(RedditFetcher.class.getSimpleName());
         logger.info("Starting Thread!");
         while (isRunning){
