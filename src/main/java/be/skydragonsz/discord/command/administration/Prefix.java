@@ -12,11 +12,11 @@ import java.util.List;
 public class Prefix extends Command {
     @Override
     public void onCommand(MessageReceivedEvent event, String[] args) {
-        if(!isOwner(event)) return;
-        if(args.length == 1) return;
+        if (!isOwner(event)) return;
+        if (args.length == 1) return;
         SettingsManager.getInstance().getSettings().setPrefix(args[1]);
         SettingsManager.reloadInstance();
-        EmbedBuilder eb = new EmbedBuilder().addField("The new prefix is changed to:",args[1],false);
+        EmbedBuilder eb = new EmbedBuilder().addField("The new prefix is changed to:", args[1], false);
         event.getChannel().sendMessage(eb.build()).queue();
     }
 

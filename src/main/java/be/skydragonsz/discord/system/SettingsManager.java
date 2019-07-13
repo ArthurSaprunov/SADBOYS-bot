@@ -15,25 +15,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class SettingsManager {
-    private Logger logger = LoggerFactory.getLogger(SettingsManager.class);
-
     private static SettingsManager instance;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private Settings settings;
     private final Path configFile = new File(".").toPath().resolve("config.json");
-
-    public static SettingsManager getInstance() {
-        if (instance == null) {
-            instance = new SettingsManager();
-        }
-        return instance;
-    }
-
-    public static void reloadInstance(){
-        instance.saveSettings();
-        instance = new SettingsManager();
-        instance.loadSettings();
-    }
+    private Logger logger = LoggerFactory.getLogger(SettingsManager.class);
+    private Settings settings;
 
     private SettingsManager() {
         if (!configFile.toFile().exists()) {
@@ -47,6 +33,19 @@ public class SettingsManager {
         loadSettings();
     }
 
+    public static SettingsManager getInstance() {
+        if (instance == null) {
+            instance = new SettingsManager();
+        }
+        return instance;
+    }
+
+    public static void reloadInstance() {
+        instance.saveSettings();
+        instance = new SettingsManager();
+        instance.loadSettings();
+    }
+
     public void loadSettings() {
         try {
             checkBadEscapes(configFile);
@@ -56,7 +55,7 @@ public class SettingsManager {
             checkOldSettingsFile();
             logger.info("Settings loaded");
         } catch (IOException e) {
-            logger.debug("Error Loading Settings",e);
+            logger.debug("Error Loading Settings", e);
             e.printStackTrace();
         }
     }
@@ -88,33 +87,27 @@ public class SettingsManager {
         return newSettings;
     }
 
-    private void checkOldSettingsFile()
-    {
+    private void checkOldSettingsFile() {
         boolean modified = false;
         Settings defaults = getDefaultSettings();
-        if (settings.getBotToken() == null)
-        {
+        if (settings.getBotToken() == null) {
             settings.setBotToken(defaults.getBotToken());
             modified = true;
         }
-        if (settings.getOwnerId() == null)
-        {
+        if (settings.getOwnerId() == null) {
             settings.setOwnerId(defaults.getOwnerId());
             modified = true;
         }
-        if (settings.getGoogleApiKey() == null)
-        {
+        if (settings.getGoogleApiKey() == null) {
             settings.setGoogleApiKey(defaults.getGoogleApiKey());
             modified = true;
         }
 
-        if (settings.getPrefix() == null)
-        {
+        if (settings.getPrefix() == null) {
             settings.setPrefix(defaults.getPrefix());
             modified = true;
         }
-        if (settings.getUseBetaBuilds() == null)
-        {
+        if (settings.getUseBetaBuilds() == null) {
             settings.setUseBetaBuilds(defaults.getUseBetaBuilds());
             modified = true;
         }
@@ -122,24 +115,20 @@ public class SettingsManager {
         if (modified) saveSettings();
     }
 
-    private void checkBadEscapes(Path filePath) throws IOException
-    {
+    private void checkBadEscapes(Path filePath) throws IOException {
         final byte FORWARD_SOLIDUS = 47;    //  /
         final byte BACKWARDS_SOLIDUS = 92;  //  \
 
         boolean modified = false;
         byte[] bytes = Files.readAllBytes(filePath);
-        for (int i = 0; i < bytes.length; i++)
-        {
-            if (bytes[i] == BACKWARDS_SOLIDUS)
-            {
+        for (int i = 0; i < bytes.length; i++) {
+            if (bytes[i] == BACKWARDS_SOLIDUS) {
                 modified = true;
                 bytes[i] = FORWARD_SOLIDUS;
             }
         }
 
-        if (modified)
-        {
+        if (modified) {
             Files.write(filePath, bytes);
         }
     }

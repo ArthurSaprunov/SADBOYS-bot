@@ -7,50 +7,45 @@ public class Settings {
     private Boolean useBetaBuilds;
     private String prefix;
 
-    public String getOwnerId(){
+    public String getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(String ownerId){
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 
-    public String getBotToken(){
+    public String getBotToken() {
         return botToken;
     }
 
-    public void setBotToken(String botToken){
+    public void setBotToken(String botToken) {
         this.botToken = botToken;
     }
 
-    public String getGoogleApiKey()
-    {
+    public String getGoogleApiKey() {
         return googleApiKey;
     }
 
-    public void setGoogleApiKey(String googleApiKey)
-    {
+    public void setGoogleApiKey(String googleApiKey) {
         this.googleApiKey = googleApiKey;
     }
 
-    public Boolean getUseBetaBuilds()
-    {
+    public Boolean getUseBetaBuilds() {
         return useBetaBuilds;
     }
 
-    public void setUseBetaBuilds(boolean useBetaBuilds)
-    {
+    public void setUseBetaBuilds(boolean useBetaBuilds) {
         this.useBetaBuilds = useBetaBuilds;
     }
 
-    public String getPrefix(){
+    public String getPrefix() {
         return this.prefix;
     }
 
-    public void setPrefix(String prefix){
+    public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
-
 
 
 }

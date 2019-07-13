@@ -15,20 +15,20 @@ public class Color extends Command {
 
     @Override
     public void onCommand(MessageReceivedEvent event, String[] args) {
-        try{
-        if (args.length == 1) {
-            sendMessage(event,"Color needs to be specified!");
-            return;
-        }
-        if (args.length == 2) sendMessage(event,"Color is: " + ColorConverter.convertToDecimal(args[1]));
-        if (args.length == 4){
-            int r = Integer.valueOf(args[1]);
-            int g = Integer.valueOf(args[2]);
-            int b = Integer.valueOf(args[3]);
-            sendMessage(event, "Color is: " + ColorConverter.convertToDecimal(new java.awt.Color(r,g,b)));
-        }
-        return; //If nothing matches
-        } catch (Exception ex){
+        try {
+            if (args.length == 1) {
+                sendMessage(event, "Color needs to be specified!");
+                return;
+            }
+            if (args.length == 2) sendMessage(event, "Color is: " + ColorConverter.convertToDecimal(args[1]));
+            if (args.length == 4) {
+                int r = Integer.valueOf(args[1]);
+                int g = Integer.valueOf(args[2]);
+                int b = Integer.valueOf(args[3]);
+                sendMessage(event, "Color is: " + ColorConverter.convertToDecimal(new java.awt.Color(r, g, b)));
+            }
+            return; //If nothing matches
+        } catch (Exception ex) {
             logger.error("Failed to get color!");
         }
     }

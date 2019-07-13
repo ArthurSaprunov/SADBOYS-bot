@@ -1,32 +1,37 @@
 package be.skydragonsz.discord.command.administration;
 
 import be.skydragonsz.discord.command.Command;
-import be.skydragonsz.discord.system.SettingsManager;
+import be.skydragonsz.discord.reddit.RedditFetcher;
+import be.skydragonsz.discord.system.ThreadConstants;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ReloadConfig extends Command {
+public class RestartReddit extends Command {
     @Override
     public void onCommand(MessageReceivedEvent event, String[] args) {
-        if (!isOwner(event)) return;
-        SettingsManager.reloadInstance();
+        ThreadConstants.reddit.stop();
+        ThreadConstants.reddit = new Thread(new RedditFetcher());
+        ThreadConstants.reddit.start();
+
+        event.getChannel().sendMessage("Restarting Reddit Thread").queue();
+
     }
 
     @Override
     public List<String> getAliases() {
-        return Arrays.asList("reload-config");
+        return Arrays.asList("restart-reddit","rr");
     }
 
     @Override
     public String getDescription() {
-        return "Reloads the config file!";
+        return null;
     }
 
     @Override
     public String getName() {
-        return "Reload";
+        return null;
     }
 
     @Override

@@ -21,28 +21,28 @@ public class JSONService {
             return sb.toString();
 
         } catch (IOException e) {
-            logger.error("Failed to get apicalls!",e);
+            logger.error("Failed to get apicalls!", e);
             return null;
         }
 
     }
 
-    public static int getResponseCode(String urlString){
+    public static int getResponseCode(String urlString) {
         try {
             URL url = new URL(urlString);
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
 
             return connection.getResponseCode();
         } catch (ProtocolException e) {
-            logger.warn("ProtocolExeption",e);
+            logger.warn("ProtocolExeption", e);
             return 0;
         } catch (MalformedURLException e) {
-            logger.warn("MalformedURLException",e);
+            logger.warn("MalformedURLException", e);
             return 0;
         } catch (IOException e) {
-            logger.warn("IOException",e);
+            logger.warn("IOException", e);
             return 0;
         }
 
@@ -52,10 +52,10 @@ public class JSONService {
         InputStream is = null;
         try {
             URLConnection urlConnection = new URL(url).openConnection();
-            urlConnection.addRequestProperty("User-Agent","SADBOYS");
+            urlConnection.addRequestProperty("User-Agent", "SADBOYS");
             is = urlConnection.getInputStream();
         } catch (IOException e) {
-            logger.error("Failed to get apicalls from url!",e);
+            logger.error("Failed to get apicalls from url!", e);
             return null;
         }
         try {
@@ -67,17 +67,17 @@ public class JSONService {
             try {
                 is.close();
             } catch (IOException e) {
-                logger.error("Failed to get apicalls!",e);
+                logger.error("Failed to get apicalls!", e);
             }
         }
     }
 
 
-    public static JSONObject sendJsonObjectToUrl(JSONObject obj, String urlString){
+    public static JSONObject sendJsonObjectToUrl(JSONObject obj, String urlString) {
         try {
             URL url = new URL(urlString);
 
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
             con.setRequestProperty("Accept", "application/json");
@@ -88,7 +88,7 @@ public class JSONService {
 
             OutputStream os = con.getOutputStream();
 
-            try(BufferedReader br = new BufferedReader(
+            try (BufferedReader br = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), "utf-8"))) {
                 StringBuilder response = new StringBuilder();
                 String responseLine = null;
@@ -106,7 +106,7 @@ public class JSONService {
 
     //TODO Rewrite this
     public static void POSTRequest(JSONObject jsonObj, String urlString) {
-        try{
+        try {
             URL obj = new URL(urlString);
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
             postConnection.setRequestMethod("POST");
@@ -114,7 +114,7 @@ public class JSONService {
 
             postConnection.setRequestProperty("Content-Type", "application/json");
 
-            for(String keys : jsonObj.keySet()){
+            for (String keys : jsonObj.keySet()) {
                 postConnection.setRequestProperty(keys, jsonObj.get(keys).toString());
             }
 
@@ -132,16 +132,16 @@ public class JSONService {
                         postConnection.getInputStream()));
                 String inputLine;
                 StringBuffer response = new StringBuffer();
-                while ((inputLine = in .readLine()) != null) {
+                while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
-                } in .close();
+                }
+                in.close();
                 // print result
                 System.out.println(response.toString());
             } else {
                 System.out.println("POST NOT WORKED");
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
 
         }
     }
