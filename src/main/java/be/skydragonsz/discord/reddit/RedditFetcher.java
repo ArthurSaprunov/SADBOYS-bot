@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageHistory;
+import net.dv8tion.jda.core.entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -48,12 +49,23 @@ public class RedditFetcher extends Thread {
                     fetchApexLegends();
                     fetchAnimeImages();
                     checkEmbedStatus();
+
                 }
+
+
 
             } catch (NullPointerException ex) {
                 logger.warn("Some value were null", ex);
             } catch (Exception ex) {
                 logger.warn("Failed to run timekeeper", ex);
+                User user = Sadboys.getAPI().getUserById("175957746879823873");
+
+                user.openPrivateChannel().queue((channel) ->
+                {
+                    channel.sendMessage("Failed to run Reddit Thread, this was the error: \n" + ex).queue();
+
+                });
+
                 terminate();
             }
         }

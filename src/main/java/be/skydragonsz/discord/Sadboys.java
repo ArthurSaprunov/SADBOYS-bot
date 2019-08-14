@@ -1,10 +1,12 @@
 package be.skydragonsz.discord;
 
-import be.skydragonsz.discord.command.Register;
+import be.skydragonsz.discord.events.Reconnect;
+import be.skydragonsz.discord.system.Register;
 import be.skydragonsz.discord.exeptions.APIExeption;
 import be.skydragonsz.discord.system.Settings;
 import be.skydragonsz.discord.system.SettingsManager;
 import be.skydragonsz.discord.system.ThreadConstants;
+import com.sun.org.apache.regexp.internal.RE;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -41,21 +43,24 @@ public class Sadboys {
 
             Register.api = api;
             Register.resiterBasicCommands();
+            Register.registerEvents();
             Register.funCommands();
             if (settings.getGoogleApiKey() != null) {
                 Register.googleAPI();
             }
+
 
             ThreadConstants.reddit.start();
         } catch (APIExeption e) {
             logger.warn("API was not registerd!", e);
             System.exit(0);
         } catch (IllegalArgumentException e) {
-            logger.error("No login details provided! Please provide a botToken in the config.");
+            logger.error("No login details provided! Please provide a botToken in the config.",e);
+
             System.exit(0);
         } catch (LoginException e) {
             logger.error("The botToken provided in the Config.json was incorrect.");
-            logger.error("Did you modify the Config.json after it was created?");
+            logger.error("Did you modify the Config.json after it was created?",e);
             System.exit(0);
         }
     }
