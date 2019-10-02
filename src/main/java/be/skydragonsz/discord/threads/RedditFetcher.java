@@ -1,12 +1,13 @@
-package be.skydragonsz.discord.reddit;
+package be.skydragonsz.discord.threads;
 
 import be.skydragonsz.discord.Sadboys;
+import be.skydragonsz.discord.system.ThreadConstants;
 import be.skydragonsz.discord.util.JSONService;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageHistory;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class RedditFetcher extends Thread {
     private boolean isRunning;
 
     private String awwnime = "https://www.reddit.com/r/awwnime/new/.json";
+    private String moeScape = "https://www.reddit.com/r/Moescape/new/.json";
     private String apexLegends = "https://www.reddit.com/r/apexlegends/new/.json";
 
 
@@ -35,11 +37,19 @@ public class RedditFetcher extends Thread {
         isRunning = false;
     }
 
+    public void restart(){
+        terminate();
+        ThreadConstants.reddit = new RedditFetcher();
+        ThreadConstants.reddit.start();
+    }
+
     @Override
     public void run() {
+        isRunning = true;
         timeKeeper = System.currentTimeMillis();
+        logger = LoggerFactory.getLogger(RedditFetcher.class);
         Thread.currentThread().setName(RedditFetcher.class.getSimpleName());
-        logger.info("Starting Thread!");
+        logger.info("Starting {} Thread!",RedditFetcher.class.getSimpleName());
 
         while (isRunning) {
             try {
@@ -47,26 +57,21 @@ public class RedditFetcher extends Thread {
                 if (currentTime > timeKeeper + timer) {
                     timeKeeper = currentTime;
                     fetchApexLegends();
-                    fetchAnimeImages();
+                    fetchAnimeImages(this.awwnime);
+                    fetchAnimeImages(this.moeScape);
                     checkEmbedStatus();
-
                 }
-
 
 
             } catch (NullPointerException ex) {
                 logger.warn("Some value were null", ex);
+                restart();
             } catch (Exception ex) {
                 logger.warn("Failed to run timekeeper", ex);
                 User user = Sadboys.getAPI().getUserById("175957746879823873");
-
-                user.openPrivateChannel().queue((channel) ->
-                {
-                    channel.sendMessage("Failed to run Reddit Thread, this was the error: \n" + ex).queue();
-
-                });
-
-                terminate();
+                user.openPrivateChannel().queue((channel) ->  channel.sendMessage("Failed to run Reddit Thread, this was the error: \n" + ex).queue());
+                restart();
+                //terminate();
             }
         }
 
@@ -80,8 +85,8 @@ public class RedditFetcher extends Thread {
     }
 
     @SuppressWarnings("Duplicates")
-    private void fetchAnimeImages() {
-        JSONObject obj = getRedditData(this.awwnime);
+    private void fetchAnimeImages(String anime) {
+        JSONObject obj = getRedditData(anime);
 
         Timestamp tempTimer = new Timestamp(60000);
         Timestamp fetched = new Timestamp(0);
@@ -95,7 +100,7 @@ public class RedditFetcher extends Thread {
 
             if (tempString.endsWith("jpg") || tempString.endsWith("png") || tempString.endsWith("gif")) {
                 EmbedBuilder eb = new EmbedBuilder();
-                eb.setImage(tempString).setAuthor("Posted by: " + obj.getString("author"), "https://www.reddit.com" + obj.getString("permalink"));
+                eb.setImage(tempString).setTitle(obj.getString("title")).setAuthor("Posted by: " + obj.getString("author"), "https://www.reddit.com" + obj.getString("permalink"));
                 Sadboys.getAPI().getTextChannelById("594476955446018049").sendMessage(eb.build()).queue();
             }
         }

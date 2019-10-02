@@ -2,7 +2,7 @@ package be.skydragonsz.discord.command.util;
 
 import be.skydragonsz.discord.command.Command;
 import be.skydragonsz.discord.util.ColorConverter;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

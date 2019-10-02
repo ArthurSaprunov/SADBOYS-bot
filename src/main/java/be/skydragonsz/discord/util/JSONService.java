@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 public class JSONService {
     private static Logger logger = LoggerFactory.getLogger(JSONService.class.getSimpleName());
 
-    private static String readAll(Reader rd) {
+    public static String readAll(Reader rd) {
         try {
             StringBuilder sb = new StringBuilder();
             int cp;

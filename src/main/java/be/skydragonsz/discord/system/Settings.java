@@ -7,6 +7,16 @@ public class Settings {
     private Boolean useBetaBuilds;
     private String prefix;
 
+    public String consoleChannel = "";
+
+    public String dbDb = "saboys";
+    public String dbHost = "localhost";
+    public String dbPassword;
+    public int dbPort = 28015;
+    public String dbUser;
+    public String dbotsToken;
+    public String dbotsorgToken;
+
     public String getOwnerId() {
         return ownerId;
     }

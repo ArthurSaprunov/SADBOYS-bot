@@ -1,10 +1,10 @@
 package be.skydragonsz.discord.command;
 
 import be.skydragonsz.discord.system.SettingsManager;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class Command extends ListenerAdapter {
     protected String prefix = SettingsManager.getInstance().getSettings().getPrefix();
     protected String ownerId = SettingsManager.getInstance().getSettings().getOwnerId();
-    private Logger logger = LoggerFactory.getLogger(Command.class);
+    protected Logger logger = LoggerFactory.getLogger(Command.class);
 
     public abstract void onCommand(MessageReceivedEvent event, String[] args);
 
@@ -37,6 +37,8 @@ public abstract class Command extends ListenerAdapter {
             if (containsCommand(event.getMessage())) onCommand(event, commandArgs(event.getMessage()));
         } catch (StringIndexOutOfBoundsException ex) {
             logger.warn("StringIndexOutOfBoundsException (how is this even triggering?)", ex);
+        } catch (Exception ex){
+            logger.error("Everything failed {}",ex);
         }
     }
 

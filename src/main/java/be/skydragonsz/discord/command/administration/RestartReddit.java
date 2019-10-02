@@ -1,9 +1,8 @@
 package be.skydragonsz.discord.command.administration;
 
 import be.skydragonsz.discord.command.Command;
-import be.skydragonsz.discord.reddit.RedditFetcher;
 import be.skydragonsz.discord.system.ThreadConstants;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,17 +10,15 @@ import java.util.List;
 public class RestartReddit extends Command {
     @Override
     public void onCommand(MessageReceivedEvent event, String[] args) {
-        ThreadConstants.reddit.stop();
-        ThreadConstants.reddit = new Thread(new RedditFetcher());
-        ThreadConstants.reddit.start();
-
+        if (!isOwner(event)) return;
+        ThreadConstants.reddit.restart();
         event.getChannel().sendMessage("Restarting Reddit Thread").queue();
-
+        logger.info("Restarting Reddit Thread!");
     }
 
     @Override
     public List<String> getAliases() {
-        return Arrays.asList("restart-reddit","rr");
+        return Arrays.asList("restart-threads","rr");
     }
 
     @Override

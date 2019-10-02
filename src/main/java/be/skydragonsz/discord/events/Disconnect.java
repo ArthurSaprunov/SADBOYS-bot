@@ -1,8 +1,9 @@
 package be.skydragonsz.discord.events;
 
-import net.dv8tion.jda.core.events.DisconnectEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.requests.CloseCode;
+import be.skydragonsz.discord.system.ThreadConstants;
+import net.dv8tion.jda.api.events.DisconnectEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.CloseCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +12,15 @@ public class Disconnect extends ListenerAdapter {
 
     @Override
     public void onDisconnect(DisconnectEvent event) {
-        CloseCode reason = event.getCloseCode();
-        logger.info("Disconnected from Discord, reason: {}", reason.getMeaning());
+        try {
+            CloseCode reason = event.getCloseCode();
+            logger.info("Disconnected from Discord, reason: {}", reason.getMeaning());
+            ThreadConstants.reddit.terminate();
+        }catch (NullPointerException ex){
+            logger.warn("There was somewhere a null: {}",ex);
+        }catch (Exception ex){
+            logger.error("Error in {}: {}",Disconnect.class.getSimpleName(),ex);
+        }
+
     }
 }
