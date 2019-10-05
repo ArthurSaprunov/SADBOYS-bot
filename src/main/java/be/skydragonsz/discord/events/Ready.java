@@ -16,8 +16,6 @@ public class Ready extends ListenerAdapter {
     public void onReady(ReadyEvent event) {
         try{
             logger.info("Connected to Discord");
-            Sadboys.setAPI(event.getJDA());
-            logger.info("Setting up API");
             ThreadConstants.reddit = new RedditFetcher();
             ThreadConstants.reddit.setDaemon(true);
             ThreadConstants.reddit.start();

@@ -1,12 +1,13 @@
 package be.skydragonsz.discord.system;
 
-import be.skydragonsz.discord.command.AliasCommand;
+import be.skydragonsz.discord.command.util.AliasCommand;
+import be.skydragonsz.discord.command.util.EvalCommand;
+import be.skydragonsz.discord.events.Alias;
 import be.skydragonsz.discord.command.HelpCommand;
-import be.skydragonsz.discord.command.administration.Prefix;
-import be.skydragonsz.discord.command.administration.RestartReddit;
-import be.skydragonsz.discord.command.administration.StopBot;
-import be.skydragonsz.discord.command.util.Alias;
-import be.skydragonsz.discord.command.util.Color;
+import be.skydragonsz.discord.command.administration.PrefixCommand;
+import be.skydragonsz.discord.command.administration.RestartRedditCommand;
+import be.skydragonsz.discord.command.administration.StopBotCommand;
+import be.skydragonsz.discord.command.util.ColorCommand;
 import be.skydragonsz.discord.events.Disconnect;
 import be.skydragonsz.discord.events.Ready;
 import be.skydragonsz.discord.events.Reconnect;
@@ -27,9 +28,10 @@ public class Register {
         try {
             builder.addEventListeners(Arrays.asList(
                     help,
-                    help.registerCommand(new Prefix()),
-                    help.registerCommand(new StopBot()),
-                    help.registerCommand(new RestartReddit())
+                    new EvalCommand(),
+                    help.registerCommand(new PrefixCommand()),
+                    help.registerCommand(new StopBotCommand()),
+                    help.registerCommand(new RestartRedditCommand())
             ));
         }catch (Exception ex){
             logger.debug("WUT",ex);
@@ -43,7 +45,8 @@ public class Register {
                     new Ready(),
                     new Reconnect(),
                     new Disconnect(),
-                    new Resume()
+                    new Resume(),
+                    new Alias()
             ));
         }catch (Exception ex){
             logger.debug("WUT",ex);
@@ -58,9 +61,8 @@ public class Register {
     public static void funCommands(DefaultShardManagerBuilder builder) {
         try{
             builder.addEventListeners(Arrays.asList(
-                    new Color(),
-                    new AliasCommand(),
-                    new Alias()
+                    new ColorCommand(),
+                    new AliasCommand()
             ));
         }catch (Exception ex){
             logger.debug("WUT",ex);

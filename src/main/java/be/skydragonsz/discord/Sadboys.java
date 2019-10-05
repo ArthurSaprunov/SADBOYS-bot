@@ -3,8 +3,6 @@ package be.skydragonsz.discord;
 import be.skydragonsz.discord.system.Register;
 import be.skydragonsz.discord.system.Settings;
 import be.skydragonsz.discord.system.SettingsManager;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.slf4j.Logger;
@@ -18,16 +16,13 @@ public class Sadboys {
     private static Logger logger = LoggerFactory.getLogger(Sadboys.class);
 
     private static Settings settings;
-    private static ShardManager shardManager;
-    private static JDA api;
+    public static ShardManager shardManager;
 
 
     public static void main(String[] args) {
         Thread t = Thread.currentThread();
         t.setName("SADBOYS");
         setupBot();
-
-
     }
 
     private static void setupBot() {
@@ -46,7 +41,6 @@ public class Sadboys {
 
         } catch (IllegalArgumentException e) {
             logger.error("Illegal Argument was passed thru.",e);
-
             System.exit(0);
         } catch (LoginException e) {
             logger.error("The botToken provided in the Config.json was incorrect.");
@@ -54,10 +48,4 @@ public class Sadboys {
             System.exit(0);
         }
     }
-
-
-    public static JDA getAPI() {
-        return api;
-    }
-    public static void setAPI(JDA newApi) {api = newApi;}
 }

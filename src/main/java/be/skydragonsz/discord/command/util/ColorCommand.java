@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class Color extends Command {
-    private Logger logger = LoggerFactory.getLogger(Color.class);
+public class ColorCommand extends Command {
+    private Logger logger = LoggerFactory.getLogger(ColorCommand.class);
 
     @Override
     public void onCommand(MessageReceivedEvent event, String[] args) {

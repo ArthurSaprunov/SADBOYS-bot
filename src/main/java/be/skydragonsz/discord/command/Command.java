@@ -43,6 +43,7 @@ public abstract class Command extends ListenerAdapter {
     }
 
     protected boolean containsCommand(Message message) {
+        if(getAliases() == null) return false;
         return getAliases().contains(commandArgs(message)[0].toLowerCase().substring(1));
     }
 

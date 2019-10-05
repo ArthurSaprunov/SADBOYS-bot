@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class ReloadConfig extends Command {
+public class ReloadConfigCommand extends Command {
     @Override
     public void onCommand(MessageReceivedEvent event, String[] args) {
         if (!isOwner(event)) return;

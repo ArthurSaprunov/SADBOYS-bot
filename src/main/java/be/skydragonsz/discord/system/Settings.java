@@ -2,7 +2,7 @@ package be.skydragonsz.discord.system;
 
 public class Settings {
     private String ownerId;
-    private String botToken;
+    private String botToken = "175957746879823873"; //Default
     private String googleApiKey;
     private Boolean useBetaBuilds;
     private String prefix;

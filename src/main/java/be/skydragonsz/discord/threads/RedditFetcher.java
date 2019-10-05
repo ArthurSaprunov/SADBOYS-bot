@@ -22,7 +22,7 @@ public class RedditFetcher extends Thread {
     private long currentTime;
     private long timeKeeper;
 
-    private boolean isRunning;
+    public boolean isRunning;
 
     private String awwnime = "https://www.reddit.com/r/awwnime/new/.json";
     private String moeScape = "https://www.reddit.com/r/Moescape/new/.json";
@@ -68,7 +68,7 @@ public class RedditFetcher extends Thread {
                 restart();
             } catch (Exception ex) {
                 logger.warn("Failed to run timekeeper", ex);
-                User user = Sadboys.getAPI().getUserById("175957746879823873");
+                User user = Sadboys.shardManager.getUserById("175957746879823873");
                 user.openPrivateChannel().queue((channel) ->  channel.sendMessage("Failed to run Reddit Thread, this was the error: \n" + ex).queue());
                 restart();
                 //terminate();
@@ -101,7 +101,7 @@ public class RedditFetcher extends Thread {
             if (tempString.endsWith("jpg") || tempString.endsWith("png") || tempString.endsWith("gif")) {
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setImage(tempString).setTitle(obj.getString("title")).setAuthor("Posted by: " + obj.getString("author"), "https://www.reddit.com" + obj.getString("permalink"));
-                Sadboys.getAPI().getTextChannelById("594476955446018049").sendMessage(eb.build()).queue();
+                Sadboys.shardManager.getTextChannelById("594476955446018049").sendMessage(eb.build()).queue();
             }
         }
     }
@@ -120,13 +120,13 @@ public class RedditFetcher extends Thread {
         if (tempArray.isEmpty()) return;
         if (tempArray.getJSONObject(0).getString("t").equals("Respawn Official")) {
             if (fetched.after(current)) {
-                Sadboys.getAPI().getTextChannelById("594418811755823105").sendMessage("https://www.reddit.com" + obj.getString("permalink")).queue();
+                Sadboys.shardManager.getTextChannelById("594418811755823105").sendMessage("https://www.reddit.com" + obj.getString("permalink")).queue();
             }
         }
     }
 
     private void checkEmbedStatus() {
-        MessageHistory history = Sadboys.getAPI().getTextChannelById("594476955446018049").getHistory();
+        MessageHistory history = Sadboys.shardManager.getTextChannelById("594476955446018049").getHistory();
         history.retrievePast(50).complete();
         for (Message message : history.getRetrievedHistory()) {
             for (MessageEmbed embed : message.getEmbeds()) {
